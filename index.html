@@ -5,153 +5,140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>子為的歌曲</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* ================= 動漫風格與配色 ================= */
+        /* ================= 視覺風格 (UI/UX) ================= */
         :root {
-            --main-blue: #70a1ff;      /* 晴空藍 */
-            --anime-green: #7bed9f;    /* 鮮亮嫩綠 */
-            --soft-white: rgba(255, 255, 255, 0.85); 
-            --accent-pink: #ff7f50;    /* 夕陽橘紅 */
-            --text-dark: #2f3542;
+            --bg-color: #F5EFE6;      /* 溫暖米色 */
+            --wood-brown: #8B5A2B;    /* 木質棕 */
+            --forest-green: #2E8B57;  /* 森林深綠 */
+            --sky-blue: #87CEEB;      /* 天空藍 */
+            --light-green: #E8F5E9;   /* 高亮背景 */
+            --text-color: #3E2723; 
         }
 
         body {
             font-family: 'Kosugi Maru', sans-serif;
-            /* 動漫感漸層背景：模擬晴空與草原 */
-            background: linear-gradient(135deg, #e0f7fa 0%, #ffecb3 100%);
-            min-height: 100vh;
-            margin: 0;
+            background-color: var(--bg-color);
+            background-image: url('data:image/svg+xml,%3Csvg width="20" height="20" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="2" cy="2" r="1" fill="%23d7ccc8" opacity="0.3"/%3E%3C/svg%3E');
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* 漂浮裝飾小圓點 */
-        body::before, body::after {
-            content: "";
-            position: absolute;
-            border-radius: 50%;
-            z-index: -1;
-            filter: blur(50px);
-            animation: float 10s infinite alternate ease-in-out;
-        }
-        body::before { width: 300px; height: 300px; background: var(--main-blue); top: -50px; left: -50px; opacity: 0.3; }
-        body::after { width: 250px; height: 250px; background: var(--anime-green); bottom: -50px; right: -50px; opacity: 0.3; }
-
-        @keyframes float { 
-            0% { transform: translateY(0) scale(1); } 
-            100% { transform: translateY(30px) scale(1.1); } 
-        }
-
-        /* 播放器主體：玻璃擬態 */
-        .player-card {
-            background: var(--soft-white);
-            backdrop-filter: blur(15px);
-            width: 360px;
-            border-radius: 40px;
-            border: 4px solid white;
-            padding: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            text-align: center;
-            position: relative;
-        }
-
-        /* 裝飾：小葉子 */
-        .deco-icon {
-            position: absolute;
-            top: -10px;
-            right: 20px;
-            font-size: 24px;
-            color: var(--anime-green);
-            transform: rotate(15deg);
-        }
-
-        /* 標題與副標 */
-        .header h1 {
-            font-size: 32px;
-            color: var(--main-blue);
+            min-height: 100vh;
             margin: 0;
-            text-shadow: 2px 2px 0px white;
+            color: var(--text-color);
+        }
+
+        /* 木質窗框設計 */
+        .player-window {
+            background-color: #FAFAFA;
+            width: 380px;
+            border: 12px solid var(--wood-brown);
+            border-radius: 45px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(139, 69, 19, 0.3);
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .deco-leaf {
+            position: absolute;
+            top: -20px;
+            right: 30px;
+            font-size: 30px;
+            color: var(--forest-green);
+            transform: rotate(20deg);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            color: var(--forest-green);
         }
         .header p {
+            margin: 5px 0;
             font-size: 14px;
-            color: var(--text-dark);
-            margin: 5px 0 15px 0;
-            letter-spacing: 3px;
-            font-weight: bold;
+            color: #795548;
         }
 
-        /* 動態圖示區域 */
-        .art-box {
-            width: 140px;
+        /* 隨機封面區 */
+        .cover-area {
             height: 140px;
-            margin: 0 auto 15px;
-            background: white;
-            border-radius: 50%;
+            background-color: #F0F4F0;
+            border-radius: 25px;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 70px;
-            color: var(--main-blue);
-            box-shadow: 0 10px 20px rgba(112, 161, 255, 0.2);
-            border: 6px solid #f1f2f6;
-            animation: pulse 4s infinite ease-in-out;
-        }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-
-        .current-track {
-            font-size: 20px;
-            color: var(--text-dark);
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        /* 搜尋框：動漫清新風 */
-        .search-container {
-            position: relative;
+            color: var(--forest-green);
             margin-bottom: 15px;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.05);
         }
-        .search-container input {
+
+        .track-display {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--wood-brown);
+            margin-bottom: 20px;
+            min-height: 30px;
+        }
+
+        /* 搜尋框 */
+        .search-box {
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .search-box input {
             width: 100%;
-            padding: 10px 10px 10px 35px;
-            border-radius: 15px;
-            border: 2px solid #dfe4ea;
+            padding: 10px 15px 10px 35px;
+            border-radius: 20px;
+            border: 2px solid #D7CCC8;
+            font-family: inherit;
             outline: none;
             box-sizing: border-box;
-            background: rgba(255,255,255,0.5);
-            transition: 0.3s;
         }
-        .search-container input:focus { border-color: var(--main-blue); background: white; }
-        .search-container i { position: absolute; left: 12px; top: 12px; color: #a4b0be; }
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #A1887F;
+        }
 
-        /* 進度條：天空藍 */
+        /* 進度條 */
         input[type="range"] {
             -webkit-appearance: none;
             width: 100%;
-            height: 6px;
+            height: 8px;
             border-radius: 10px;
-            background: #dfe4ea;
+            background: #E0E0E0;
             outline: none;
-            margin-bottom: 20px;
+            cursor: pointer;
         }
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 18px; height: 18px;
-            background: white;
-            border: 4px solid var(--main-blue);
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
-            cursor: pointer;
+            background: var(--forest-green);
+            border: 2px solid white;
         }
         #progressBar {
-            background: linear-gradient(to right, var(--main-blue) 0%, #dfe4ea 0%);
+            background: linear-gradient(to right, var(--sky-blue) 0%, #E0E0E0 0%);
+            margin-bottom: 15px;
         }
 
-        /* 按鈕區 */
+        /* 控制鈕 */
         .controls {
             display: flex;
             justify-content: space-around;
@@ -162,83 +149,93 @@
             background: none;
             border: none;
             cursor: pointer;
-            color: var(--main-blue);
-            font-size: 26px;
-            transition: 0.3s;
+            color: var(--wood-brown);
+            font-size: 24px;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .btn:hover { color: var(--accent-pink); transform: scale(1.2); }
-        .btn-play { font-size: 50px; }
+        .btn:hover { color: var(--forest-green); transform: scale(1.1); }
+        .btn-play { font-size: 48px; color: var(--forest-green); }
+        .label { font-size: 10px; margin-top: 4px; }
 
         /* 音量 */
         .volume-box {
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-bottom: 20px;
             padding: 0 10px;
-            margin-bottom: 15px;
         }
-        .volume-box i { color: var(--main-blue); }
 
         /* 播放清單 */
-        .playlist {
-            max-height: 150px;
+        .playlist-box {
+            max-height: 180px;
             overflow-y: auto;
-            border-top: 2px solid #f1f2f6;
+            border-top: 2px dashed #D7CCC8;
             padding-top: 10px;
         }
-        .playlist::-webkit-scrollbar { width: 4px; }
-        .playlist::-webkit-scrollbar-thumb { background: var(--main-blue); border-radius: 10px; }
+        .playlist-box::-webkit-scrollbar { width: 5px; }
+        .playlist-box::-webkit-scrollbar-thumb { background: #D7CCC8; border-radius: 10px; }
         
         ul { list-style: none; padding: 0; margin: 0; }
         li {
-            padding: 8px 15px;
-            border-radius: 10px;
+            padding: 10px 15px;
+            border-radius: 12px;
             cursor: pointer;
-            margin-bottom: 4px;
-            font-size: 16px;
-            color: var(--text-dark);
-            text-align: left;
-            transition: 0.2s;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            color: var(--wood-brown);
         }
-        li:hover { background: rgba(112, 161, 255, 0.1); }
         li.active {
-            background: var(--anime-green);
-            color: white;
+            background-color: var(--light-green);
+            color: var(--forest-green);
             font-weight: bold;
         }
         li.active::before {
-            content: "\f06c"; font-family: "Font Awesome 6 Free"; font-weight: 900; margin-right: 10px;
+            content: '\f06c';
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            margin-right: 10px;
         }
     </style>
 </head>
 <body>
 
-    <div class="player-card">
-        <i class="fas fa-leaf deco-icon"></i>
+    <div class="player-window">
+        <i class="fas fa-leaf deco-leaf"></i>
         <div class="header">
             <h1>子為</h1>
-            <p>MP3 PLAYER</p>
+            <p>MP3撥放器</p>
         </div>
 
-        <div class="art-box" id="artBox">
-            <i class="fas fa-sun"></i>
+        <div class="cover-area" id="coverIcon">
+            <i class="fas fa-seedling"></i>
         </div>
 
-        <div class="current-track" id="trackTitle">Track 01</div>
+        <div class="track-display" id="trackLabel">Track 01</div>
 
-        <div class="search-container">
+        <div class="search-box">
             <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="搜尋編號或路徑...">
+            <input type="text" id="searchInput" placeholder="搜尋編號或檔名...">
         </div>
 
         <input type="range" id="progressBar" value="0" min="0" max="100" step="0.1">
 
         <div class="controls">
-            <button class="btn" id="shuffleBtn" title="隨機模式"><i class="fas fa-random"></i></button>
-            <button class="btn" id="prevBtn"><i class="fas fa-backward"></i></button>
+            <button class="btn" id="shuffleBtn">
+                <i class="fas fa-random"></i>
+                <span class="label" id="shuffleTxt">OFF</span>
+            </button>
+            <button class="btn" id="prevBtn"><i class="fas fa-step-backward"></i></button>
             <button class="btn btn-play" id="playBtn"><i class="fas fa-play-circle"></i></button>
-            <button class="btn" id="nextBtn"><i class="fas fa-forward"></i></button>
-            <button class="btn" id="repeatBtn" title="循環模式"><i class="fas fa-redo" id="repeatIcon"></i></button>
+            <button class="btn" id="nextBtn"><i class="fas fa-step-forward"></i></button>
+            <button class="btn" id="repeatBtn">
+                <i class="fas fa-arrow-right" id="repeatIcon"></i>
+                <span class="label" id="repeatTxt">不循環</span>
+            </button>
         </div>
 
         <div class="volume-box">
@@ -247,26 +244,28 @@
             <i class="fas fa-volume-up"></i>
         </div>
 
-        <div class="playlist">
-            <ul id="playlistItems"></ul>
+        <div class="playlist-box">
+            <ul id="playlist"></ul>
         </div>
     </div>
 
-    <audio id="mainAudio"></audio>
+    <audio id="audio"></audio>
 
     <script>
-        // 音樂路徑設定
+        // 設定播放路徑
         const musicFiles = [
             'music/song1.mp3',
             'music/song2.mp3',
             'music/song3.mp3',
+            'music/song4.mp3',
+            'music/song5.mp3'
         ];
 
-        const icons = ['fa-cloud', 'fa-sun', 'fa-moon', 'fa-seedling', 'fa-leaf', 'fa-mountain', 'fa-water', 'fa-star'];
-        const audio = document.getElementById('mainAudio');
-        const playlistEl = document.getElementById('playlistItems');
-        const trackTitle = document.getElementById('trackTitle');
-        const artBox = document.getElementById('artBox');
+        const icons = ['fa-seedling', 'fa-tree', 'fa-cloud', 'fa-sun', 'fa-leaf', 'fa-mountain'];
+        const audio = document.getElementById('audio');
+        const playlistEl = document.getElementById('playlist');
+        const trackLabel = document.getElementById('trackLabel');
+        const coverIcon = document.getElementById('coverIcon');
         const playBtn = document.getElementById('playBtn');
         const progressBar = document.getElementById('progressBar');
         const volumeBar = document.getElementById('volumeBar');
@@ -278,11 +277,11 @@
         let repeatMode = 0; // 0:不, 1:全, 2:單
 
         function init() {
-            renderPlaylist();
+            renderList();
             loadTrack(0, false);
         }
 
-        function renderPlaylist() {
+        function renderList() {
             playlistEl.innerHTML = '';
             musicFiles.forEach((file, index) => {
                 const li = document.createElement('li');
@@ -295,26 +294,23 @@
             });
         }
 
-        function loadTrack(index, autoPlay) {
+        function loadTrack(index, auto) {
             currentIndex = index;
             audio.src = musicFiles[index];
-            trackTitle.textContent = `Track ${String(index + 1).padStart(2, '0')}`;
+            trackLabel.textContent = `Track ${String(index + 1).padStart(2, '0')}`;
+            coverIcon.innerHTML = `<i class="fas ${icons[Math.floor(Math.random()*icons.length)]}"></i>`;
             
-            // 隨機更換動漫大自然圖示
-            artBox.innerHTML = `<i class="fas ${icons[Math.floor(Math.random()*icons.length)]}"></i>`;
-            
-            // 更新高亮
             const items = playlistEl.querySelectorAll('li');
-            items.forEach(li => li.classList.remove('active'));
+            items.forEach(item => item.classList.remove('active'));
             if(items[index]) items[index].classList.add('active');
-
-            if(autoPlay) playMusic();
+            
+            if(auto) playTrack();
         }
 
-        function playMusic() { isPlaying = true; audio.play(); playBtn.innerHTML = '<i class="fas fa-pause-circle"></i>'; }
-        function pauseMusic() { isPlaying = false; audio.pause(); playBtn.innerHTML = '<i class="fas fa-play-circle"></i>'; }
+        function playTrack() { isPlaying = true; audio.play(); playBtn.innerHTML = '<i class="fas fa-pause-circle"></i>'; }
+        function pauseTrack() { isPlaying = false; audio.pause(); playBtn.innerHTML = '<i class="fas fa-play-circle"></i>'; }
 
-        playBtn.onclick = () => isPlaying ? pauseMusic() : playMusic();
+        playBtn.onclick = () => isPlaying ? pauseTrack() : playTrack();
 
         document.getElementById('nextBtn').onclick = () => {
             let next = isShuffle ? Math.floor(Math.random()*musicFiles.length) : (currentIndex + 1) % musicFiles.length;
@@ -329,14 +325,14 @@
         audio.onended = () => {
             if(repeatMode === 2) loadTrack(currentIndex, true);
             else if(repeatMode === 1 || currentIndex < musicFiles.length - 1 || isShuffle) document.getElementById('nextBtn').click();
-            else pauseMusic();
+            else pauseTrack();
         };
 
         audio.ontimeupdate = () => {
             if(audio.duration){
                 const per = (audio.currentTime / audio.duration) * 100;
                 progressBar.value = per;
-                progressBar.style.background = `linear-gradient(to right, var(--main-blue) ${per}%, #dfe4ea ${per}%)`;
+                progressBar.style.background = `linear-gradient(to right, var(--sky-blue) ${per}%, #E0E0E0 ${per}%)`;
             }
         };
 
@@ -352,16 +348,17 @@
 
         document.getElementById('shuffleBtn').onclick = () => {
             isShuffle = !isShuffle;
-            document.getElementById('shuffleBtn').style.color = isShuffle ? 'var(--accent-pink)' : 'var(--main-blue)';
+            document.getElementById('shuffleTxt').textContent = isShuffle ? 'ON' : 'OFF';
+            document.getElementById('shuffleBtn').style.color = isShuffle ? 'var(--forest-green)' : 'var(--wood-brown)';
         };
 
         document.getElementById('repeatBtn').onclick = () => {
             repeatMode = (repeatMode + 1) % 3;
             const icon = document.getElementById('repeatIcon');
-            const btn = document.getElementById('repeatBtn');
-            if(repeatMode === 0) { icon.className = 'fas fa-arrow-right'; btn.style.color = 'var(--main-blue)'; }
-            else if(repeatMode === 1) { icon.className = 'fas fa-redo'; btn.style.color = 'var(--accent-pink)'; }
-            else { icon.className = 'fas fa-sync-alt'; btn.style.color = 'var(--accent-pink)'; }
+            const txt = document.getElementById('repeatTxt');
+            if(repeatMode === 0) { icon.className = 'fas fa-arrow-right'; txt.textContent = '不循環'; }
+            else if(repeatMode === 1) { icon.className = 'fas fa-redo'; txt.textContent = '全循環'; }
+            else { icon.className = 'fas fa-sync-alt'; txt.textContent = '單循環'; }
         };
 
         init();
